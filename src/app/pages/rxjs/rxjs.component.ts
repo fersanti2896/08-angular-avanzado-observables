@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable, interval } from 'rxjs';
-import { retry } from 'rxjs/operators';
+import { retry, take, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rxjs',
@@ -10,17 +10,27 @@ import { retry } from 'rxjs/operators';
 })
 export class RxjsComponent {
   constructor() { 
-    this.retornaObservable().pipe(
+    /* this.retornaObservable().pipe(
       retry()  
     )
     .subscribe(
       valor => console.log('Subs:', valor),
       (err) => console.warn('Error:', err),
       () => console.info('Obs terminado')
-    );
+    ); */
+
+    this.retornaInterval()
+        .subscribe(console.log)    
   }
 
-  retornaObservable() {
+  retornaInterval(): Observable<number> {
+    return interval(1000).pipe(
+                            take(4), /* Operador que solo emite lo que se le pasa por valor */
+                            map( valor => valor + 1 ) /* Operador que transforma lo que recibe */
+                          ); 
+  }
+
+  retornaObservable(): Observable<number> {
     /* Creando un observable */
     let i = -1;
 
