@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable, interval } from 'rxjs';
-import { retry, take, map } from 'rxjs/operators';
+import { retry, take, map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-rxjs',
@@ -24,9 +24,10 @@ export class RxjsComponent {
   }
 
   retornaInterval(): Observable<number> {
-    return interval(1000).pipe(
-                            take(4), /* Operador que solo emite lo que se le pasa por valor */
-                            map( valor => valor + 1 ) /* Operador que transforma lo que recibe */
+    return interval(500).pipe(
+                            take(10), /* Operador que solo emite lo que se le pasa por valor */
+                            map( valor => valor + 1 ), /* Operador que transforma lo que recibe */
+                            filter( valor => valor % 2 === 0 ) /* Operador que filtra los números en pares */
                           ); 
   }
 
